@@ -1,5 +1,6 @@
 package ru.sbt.bit.java.lesson4.container;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,15 +28,9 @@ public class FixedSizeContainer<E> implements Container<E> {
 
     @Override
     public void addAll(Container<? extends E> source) {
-        Object[] newObjects = new Object[size + source.size()];
-        int i = 0;
-        for (; i < size; i++) {
-            newObjects[i] = objects[i];
+        for (Object element : source.toList()) {
+            this.add((E) element);
         }
-        for (int j = 0; i < size + source.size() && j < source.size(); i++, j++) {
-            newObjects[i] = source.get(j);
-        }
-        objects = newObjects;
 
     }
 
@@ -45,8 +40,12 @@ public class FixedSizeContainer<E> implements Container<E> {
     }
 
     @Override
-    public List toList() {
-        return Arrays.asList(objects);
+    public List<E> toList() {
+        List<E> list = new ArrayList<>();
+        for (Object o : objects) {
+            list.add((E) o);
+        }
+        return list;
     }
 
     @Override
