@@ -47,12 +47,12 @@ public class SimpleLinkedList<T> implements LinkedList<T> {
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return toList().iterator();
     }
 
     @Override
