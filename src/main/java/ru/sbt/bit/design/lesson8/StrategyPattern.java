@@ -24,8 +24,4 @@ public class StrategyPattern {
         return res;
     }
 
-    interface Operation {
-        public int[] op(int arr[]);
-    }
-
 }
