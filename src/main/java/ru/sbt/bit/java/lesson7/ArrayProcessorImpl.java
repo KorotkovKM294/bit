@@ -17,8 +17,8 @@ public class ArrayProcessorImpl implements ArrayProcessor {
                          ElementStrategy strategy,
                          int threadCount) {
         final int length = original.length;
-        final int counter = length / threadCount;
-        max = length % threadCount == 0 ? counter : counter + length % threadCount;
+        final int batchSize = length / threadCount;
+        max = length % threadCount == 0 ? batchSize : batchSize + length % threadCount;
         int[] result = new int[length];
         Runnable runnable = new Runnable() {
             @Override
@@ -28,7 +28,7 @@ public class ArrayProcessorImpl implements ArrayProcessor {
                         result[i] = strategy.process(original[i]);
                     }
                     index = max;
-                    max += counter;
+                    max += batchSize;
                 }
             }
         };
@@ -49,4 +49,29 @@ public class ArrayProcessorImpl implements ArrayProcessor {
         index = 0;
         return result;
     }
+
+    // Это часть решения, которое написал он (лень было переписывать все)
+    private static class Worker implements Runnable {
+        private final int[] original;
+        private final int[] result;
+        private final int from;
+        private final int to;
+        private final ElementStrategy strategy;
+
+        public Worker(int[] original, int[] result, int from, int to, ElementStrategy strategy) {
+            this.original = original;
+            this.result = result;
+            this.from = from;
+            this.to = to;
+            this.strategy = strategy;
+        }
+
+        @Override
+        public void run() {
+            for (int i = from; i < to; i++) {
+                result[i] = strategy.process(original[i]);
+            }
+        }
+    }
+
 }
