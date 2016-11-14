@@ -1,5 +1,8 @@
 package ru.sbt.bit.java.lesson7;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created on 14.11.2016.
  *
@@ -29,11 +32,16 @@ public class ArrayProcessorImpl implements ArrayProcessor {
                 }
             }
         };
+        List<Thread> threads = new ArrayList<>();
         for (int i = 0; i < threadCount; i++) {
             Thread thread = new Thread(runnable);
+            threads.add(thread);
             thread.start();
+
+        }
+        for (Thread forJoin : threads) {
             try {
-                thread.join();
+                forJoin.join();
             } catch (InterruptedException e) {
                 throw new RuntimeException("interrupted", e);
             }
