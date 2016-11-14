@@ -1,5 +1,6 @@
 package ru.sbt.bit.java.lesson7;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -20,16 +21,18 @@ public class ArrayProcessorImplTest {
             }
         };
         int[] a = {10, 10, 50, 50, 30, 47, 54, 545, 45, 54};
+        int[] expected = {100, 100, 500, 500, 300, 470, 540, 5450, 450, 540};
+
         int[] result = p.process(a, strategy, 2);
 
         for (int i = 0; i < result.length; i++) {
-            a[i] = result[i] * 10;
+            Assert.assertArrayEquals(expected, result);
         }
 
         result = p.process(a, strategy, 7);
 
         for (int i = 0; i < result.length; i++) {
-            a[i] = result[i] * 10;
+            Assert.assertArrayEquals(expected, result);
         }
     }
 

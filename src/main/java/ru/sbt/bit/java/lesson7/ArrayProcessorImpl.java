@@ -14,13 +14,13 @@ public class ArrayProcessorImpl implements ArrayProcessor {
                          ElementStrategy strategy,
                          int threadCount) {
         final int length = original.length;
-        max = length / threadCount;
-        final int counter = length % threadCount == 0 ? max : max + length % threadCount;
+        final int counter = length / threadCount;
+        max = length % threadCount == 0 ? counter : counter + length % threadCount;
         int[] result = new int[length];
         Runnable runnable = new Runnable() {
             @Override
             public synchronized void run() {
-                if (max < length) {
+                if (max <= length) {
                     for (int i = index; i < max; i++) {
                         result[i] = strategy.process(original[i]);
                     }
@@ -38,7 +38,7 @@ public class ArrayProcessorImpl implements ArrayProcessor {
                 throw new RuntimeException("interrupted", e);
             }
         }
-
+        index = 0;
         return result;
     }
 }
