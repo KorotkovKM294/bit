@@ -9,6 +9,7 @@ import java.util.List;
  * @author Kirill M. Korotkov
  */
 public class RunnableManagerImpl implements RunnableManager {
+    private ThreadPool threadPool;
 
     @Override
     public void run(final Runnable callback, Runnable...runnables) {

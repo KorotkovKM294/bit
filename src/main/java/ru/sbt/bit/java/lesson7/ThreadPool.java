@@ -1,39 +1,36 @@
 package ru.sbt.bit.java.lesson7;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created on 14.11.2016.
  *
- * Стандартный шаблон producer-consumer
- *
  * @author Kirill M. Korotkov
  */
-public class Producers {
-    private final List<String> strings = new ArrayList<>();
+public class ThreadPool {
+    private List<Runnable> runnables;
 
-    public void produce() {
+    public void start(int count) {
         synchronized (this) {
             while (true) {
-                if (strings.size() > 10_000) {
+                if (runnables.isEmpty()) {
                     doWait();
                 }
-                strings.add("idem " + System.currentTimeMillis());
+                Runnable runnable = runnables.remove(count);
+                runnable.run();
                 notify();
             }
         }
     }
 
-    public void consume() {
+    public void execute(Runnable runnable) {
         synchronized (this) {
             while (true) {
-                if (strings.isEmpty()) {
+                if (runnables.size() > 4) {
                     doWait();
                 }
-                String remove = strings.remove(0);
+                runnables.add(runnable);
                 notify();
-                System.out.println(remove);
             }
         }
     }
@@ -44,9 +41,5 @@ public class Producers {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static void main(String[] args) {
-
     }
 }
