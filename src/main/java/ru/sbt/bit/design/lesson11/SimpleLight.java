@@ -22,8 +22,10 @@ public class SimpleLight extends ObservableObject implements Light {
 
     @Override
     public void turnOn() {
-        state = LightState.ON;
-        getListener().onEvent(new LightOnEvent(this));
+        if (Math.random() > 0.1) {
+            state = LightState.ON;
+            getListener().onEvent(new LightOnEvent(this));
+        }
     }
 
     @Override
